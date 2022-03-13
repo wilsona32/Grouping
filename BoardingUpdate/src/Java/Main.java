@@ -19,20 +19,28 @@ public class Main {
     System.out.println("Input an Email Address?  Example: Lovely@hotmail.com");
     String email = input.nextLine();
     human.setEmail(email);
-    System.out.println("Can we get a phone number from you as well? (6**)*******");
+    System.out.println("Can we get a phone number from you as well? 6**-***-****");
     String number = input.nextLine();
     human.setNumber(number);
     System.out.println("Just a few more questions");
-    System.out.println("What is your gender");
+    System.out.println("What is your gender Ex. Male, Female, Other");
     String gender = input.nextLine();
     human.setGender(gender);
     System.out.println("How about the age?");
     String age = input.nextLine();
     human.setAge(age);
+    System.out.println("When do you plan on leaving? Ex. 01-25-2023 (Month-Day-Year)");
+    String date = input.nextLine();
+    human.setDate(date);
+    System.out.println("Where do you plan on travelling to?");
+    String dest = input.nextLine();
+    human.setDest(dest);
     boardingnum = generateBoardingNum();
     indFile();
+    Charset utf8 = StandardCharsets.UTF_8;
+
 }
-//creates the file PER USER for each runthrough
+//creates the file PER USER for each run-through
 public static void indFile(){
     Charset utf8 = StandardCharsets.UTF_8;
     String test = "test";
@@ -54,6 +62,8 @@ public static class Human {
     private String number;
     private String gender;
     private String age;
+    private String date;
+    private String dest;
 
     public Human() {
     }
@@ -89,13 +99,27 @@ public static class Human {
     public void setAge(String age) {
         this.age = age;
     }
+    public String getDate() {
+        return date;
+    }
+    public void setDate(String date) {
+        this.date = date;
+    }
+    public String getDest() {
+        return dest;
+    }
+    public void setDest(String dest) {
+        this.age = dest;
+    }
 
-    public Human(String name, String email, String number, String gender, String age) {
+    public Human(String name, String email, String number, String gender, String age,String date,String dest) {
         this.name = name;
         this.email = email;
         this.number = number;
         this.gender = gender;
         this.age = age;
+        this.date = date;
+        this.dest = dest;
     }
 }
 
@@ -106,7 +130,7 @@ public static class Human {
     Can't do it yet since idk where the file is yet
      */
     public static int generateBoardingNum(){
-        Random rand;
+        Random rand = new Random();
         int passNum = rand.nextInt((9999-1000)+1)+1000; //random int that's 4 digits
         boolean used = false;
         for (int i : usedNumbers){ //check to see if it's been used before.
