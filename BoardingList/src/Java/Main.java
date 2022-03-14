@@ -1,15 +1,17 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Main {
+public class Main implements Serializable {
     public static Charset utf8 = StandardCharsets.UTF_8;
     static ArrayList<Integer> usedNumbers = new ArrayList<Integer>(); //list of used boarding pass numbers
    //creates the file PER USER for each run-through
@@ -17,10 +19,10 @@ public class Main {
 
 
 //runs the prompt for user input, storing all the information in a new human Object.
-    public static void imp(){
+    private static void imp(){
     Scanner input = new Scanner(System.in);
     Human human = new Human();
-    int boardingnum;
+
     //Basic Display and Inputs
     System.out.println("Hello! What is your name?");
     String name = input.nextLine();
@@ -44,15 +46,15 @@ public class Main {
     System.out.println("Where do you plan on travelling to?");
     String dest = input.nextLine();
     human.setDest(dest);
-    System.out.println(human);
-    boardingnum = generateBoardingNum();
+    String temp = human.toString();
+    String temp2 = human.toString2();
         try {
-        Files.write(Paths.get("userFile.txt"), (Iterable<? extends CharSequence>) human,utf8);
+        Files.write(Paths.get("userFile.txt"), Collections.singleton(temp),utf8);
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-        Files.write(Paths.get("shareFile.txt"), (Iterable<? extends CharSequence>) human,utf8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        Files.write(Paths.get("shareFile.txt"),Collections.singleton(temp2),utf8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     } catch (IOException e) {
         e.printStackTrace();
     }
@@ -69,7 +71,7 @@ public static class Human {
     private String age;
     private String date;
     private String dest;
-
+    int boardingnum = generateBoardingNum();
     public Human() {
     }
 
@@ -114,7 +116,7 @@ public static class Human {
         return dest;
     }
     public void setDest(String dest) {
-        this.age = dest;
+        this.dest = dest;
     }
 
     public Human(String name, String email, String number, String gender, String age,String date,String dest) {
@@ -126,7 +128,17 @@ public static class Human {
         this.date = date;
         this.dest = dest;
     }
+    @Override
+    public String toString(){
+        return "Name: " + name + ", " + "User's Email Address: " + email + ", " + "User's Phone No.: " + number + ", " + "Gender: " + gender + ", " + "Age: " + age + ", " + "Desired Destination: " + dest + ", " + "Boarding Number: " + boardingnum;
+    }
+
+    public String toString2(){
+        return name + "," + email + "," + number + "," + gender + "," + age + "," + date + "," + dest+ "," + boardingnum;
+    }
+
 }
+
 
     /*
     Only thing that will need to change in generateBoardingNum is that the arrayList usedNumbers will most
